@@ -216,9 +216,7 @@ def create_structure(
 
 def resolve_leaf(contents: Leaf) -> ResolvedLeaf:
     """Normalize project structure leaf to be a ``Tuple[AbstractContent, FileOp]``"""
-    if isinstance(contents, tuple):
-        return contents
-    return (contents, create)
+    return contents if isinstance(contents, tuple) else (contents, create)
 
 
 def reify_content(content: AbstractContent, opts: ScaffoldOpts) -> FileContents:
@@ -451,7 +449,4 @@ def _merge_leaf(old_value: Leaf, new_value: Leaf) -> Leaf:
     content = old[0] if new[0] is None else new[0]
     file_op = old[1] if new[1] is None else new[1]
 
-    if file_op is None:
-        return content
-
-    return (content, file_op)
+    return content if file_op is None else (content, file_op)

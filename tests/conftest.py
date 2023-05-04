@@ -116,12 +116,10 @@ def venv(fake_home, fake_xdg_config_home):
     virtualenv.env["USERPROFILE"] = str(fake_home)
     virtualenv.env["XDG_CONFIG_HOME"] = str(fake_xdg_config_home)
 
-    trusted = os.environ.get("PIP_TRUSTED_HOST")
-    if trusted:
+    if trusted := os.environ.get("PIP_TRUSTED_HOST"):
         virtualenv.env["PIP_TRUSTED_HOST"] = trusted
 
-    cache = os.environ.get("PIP_CACHE")
-    if cache:
+    if cache := os.environ.get("PIP_CACHE"):
         virtualenv.env["PIP_CACHE"] = cache
 
     return virtualenv

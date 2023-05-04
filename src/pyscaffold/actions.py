@@ -270,9 +270,12 @@ def verify_options_consistency(struct: Structure, opts: ScaffoldOpts) -> ActionP
             f"Package name {opts['package']!r} is not a valid identifier."
         )
 
-    if opts["update"] and not opts["force"]:
-        if not info.is_git_workspace_clean(opts["project_path"]):
-            raise GitDirtyWorkspace
+    if (
+        opts["update"]
+        and not opts["force"]
+        and not info.is_git_workspace_clean(opts["project_path"])
+    ):
+        raise GitDirtyWorkspace
 
     return struct, opts
 

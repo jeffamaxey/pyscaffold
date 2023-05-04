@@ -168,7 +168,7 @@ def iterate_entry_points(group=ENTRYPOINT_GROUP) -> Iterable[EntryPoint]:
     else:
         # TODO: Once Python 3.10 becomes the oldest version supported, this fallback and
         #       conditional statement can be removed.
-        return (extension for extension in entries.get(group, []))  # type: ignore
+        return iter(entries.get(group, []))
 
 
 def load_from_entry_point(entry_point: EntryPoint) -> Extension:

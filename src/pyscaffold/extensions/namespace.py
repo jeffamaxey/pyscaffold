@@ -70,7 +70,7 @@ def prepare_namespace(namespace_str: str) -> List[str]:
     Raises:
           :obj:`InvalidIdentifier` : raised if namespace is not valid
     """
-    namespaces = namespace_str.split(".") if namespace_str else list()
+    namespaces = namespace_str.split(".") if namespace_str else []
     for namespace in namespaces:
         if not is_valid_identifier(namespace):
             raise InvalidIdentifier(f"{namespace} is not a valid namespace package.")
@@ -101,8 +101,10 @@ def add_namespace(struct: Structure, opts: ScaffoldOpts) -> ActionParams:
         Directory structure as dictionary of dictionaries and input options
     """
     if not opts.get("namespace"):
-        msg = "Using the `Namespace` extension with an empty namespace string/None. "
-        msg += "You can try a valid string with the `--namespace` option in `putup` "
+        msg = (
+            "Using the `Namespace` extension with an empty namespace string/None. "
+            + "You can try a valid string with the `--namespace` option in `putup` "
+        )
         msg += "(PyScaffold CLI) the arguments in `create_project` (PyScaffold API)."
         logger.warning(msg)
         return struct, opts

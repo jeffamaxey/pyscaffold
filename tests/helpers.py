@@ -55,8 +55,6 @@ def rmpath(path):
 
 
 def set_writable(func, path, exc_info):
-    max_attempts = 15
-    retry_interval = 0.1
     effective_ids = os.access in os.supports_effective_ids
     existing_files = glob(f"{path}/*")
 
@@ -67,6 +65,8 @@ def set_writable(func, path, exc_info):
         except FileNotFoundError:
             return
     else:
+        max_attempts = 15
+        retry_interval = 0.1
         # For some weird reason we do have rights to remove the dir,
         # let's try again a few times more slowly (maybe a previous OS call
         # returned to the python interpreter but the files were not completely

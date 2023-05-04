@@ -105,10 +105,7 @@ def create(path: Path, contents: FileContents, opts: ScaffoldOpts) -> Union[Path
 
 def remove(path: Path, _content: FileContents, opts: ScaffoldOpts) -> Union[Path, None]:
     """Remove the file if it exists in the disk"""
-    if not path.exists():
-        return None
-
-    return fs.rm_rf(path, pretend=opts.get("pretend"))
+    return fs.rm_rf(path, pretend=opts.get("pretend")) if path.exists() else None
 
 
 def no_overwrite(file_op: FileOp = create) -> FileOp:

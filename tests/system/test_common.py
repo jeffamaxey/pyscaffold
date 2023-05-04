@@ -165,7 +165,7 @@ def test_tox_build(cwd, tox, putup):
         # then tasks will execute
         run(f"{tox} -e build")
         # and a pure Python distribution is created
-        assert len(list(Path("dist").glob("*py3-none-any.whl"))) > 0
+        assert list(Path("dist").glob("*py3-none-any.whl"))
         try:
             run(f"{tox} -e clean")
             assert not Path("dist").exists()
@@ -187,7 +187,7 @@ def test_tox_build(cwd, tox, putup):
 def test_extensions(cwd, putup, extension, kwargs, filename):
     # Given pyscaffold is installed,
     # when we call putup with extensions
-    name = "myproj-" + extension
+    name = f"myproj-{extension}"
     run(f"{putup} -vv --{extension} {name}")
     with cwd.join(name).as_cwd():
         # then special files should be created

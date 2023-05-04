@@ -112,9 +112,9 @@ def find_executable(struct: Structure, opts: ScaffoldOpts) -> ActionParams:
 def install(struct: Structure, opts: ScaffoldOpts) -> ActionParams:
     """Attempts to install pre-commit in the project"""
     project_path = opts.get("project_path", "PROJECT_DIR")
-    pre_commit = opts.get(CMD_OPT) or shell.get_command(EXECUTABLE, venv.get_path(opts))
-    # ^  try again after venv, maybe it was installed
-    if pre_commit:
+    if pre_commit := opts.get(CMD_OPT) or shell.get_command(
+        EXECUTABLE, venv.get_path(opts)
+    ):
         try:
             with chdir(opts.get("project_path", "."), **opts):
                 pre_commit("install", pretend=opts.get("pretend"))

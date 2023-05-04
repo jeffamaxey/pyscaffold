@@ -116,10 +116,10 @@ def test_report(caplog, tmpfolder):
     logger.report("make", str(tmpfolder.join(name)))
     # Then the message should be formatted accordingly.
     logs = caplog.text
-    match = re.search("make.+" + name, logs)
+    match = re.search(f"make.+{name}", logs)
     assert match
     # And relative paths should be used
-    assert lp("/tmp") not in match.group(0)
+    assert lp("/tmp") not in match[0]
 
 
 def test_indent(caplog):

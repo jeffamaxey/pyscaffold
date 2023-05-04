@@ -107,14 +107,13 @@ def is_git_configured() -> bool:
     logger.report("check", "is git configured...")
     if os.getenv(GitEnv.author_name.value) and os.getenv(GitEnv.author_email.value):
         return True
+    try:
+        for attr in ("name", "email"):
+            shell.git("config", "--get", f"user.{attr}")
+    except ShellCommandException:
+        return False
     else:
-        try:
-            for attr in ("name", "email"):
-                shell.git("config", "--get", f"user.{attr}")
-        except ShellCommandException:
-            return False
-        else:
-            return True
+        return True
 
 
 def check_git():
@@ -203,7 +202,7 @@ def project(
 
     # Overwrite only if user has not provided corresponding cli argument
     # Derived/computed parameters should be set by `get_default_options`
-    opts = {**existing, **opts}
+    opts = existing | opts
 
     # Complement the cli extensions with the ones from configuration
     not_found_ext: Set[str] = set()
@@ -381,7 +380,4 @@ def config_file(name=CONFIG_FILE, prog=PKG_NAME, org=None, default=RAISE_EXCEPTI
         default = None
 
     dir = config_dir(prog, org, default)
-    if dir is None:
-        return default_file
-
-    return dir / name
+    return default_file if dir is None else dir / name

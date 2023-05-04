@@ -174,8 +174,7 @@ def add_pyscaffold(config: ConfigUpdater, opts: ScaffoldOpts) -> ConfigUpdater:
     # Add the new extensions alongside the existing ones
     extensions = {ext.name for ext in opts.get("extensions", []) if ext.persist}
     old = cast(str, pyscaffold.get("extensions", Object(value="")).value)
-    new = list(sorted(parse_extensions(old) | extensions))
-    if new:
+    if new := list(sorted(parse_extensions(old) | extensions)):
         pyscaffold.set("extensions")
         pyscaffold["extensions"].set_values(new)
 
@@ -228,6 +227,6 @@ def init(opts):
     if opts["package"] == opts["name"]:
         opts["distribution"] = "__name__"
     else:
-        opts["distribution"] = '"{}"'.format(opts["name"])
+        opts["distribution"] = f'"{opts["name"]}"'
     template = get_template("__init__")
     return template.substitute(opts)

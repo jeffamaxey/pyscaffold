@@ -26,8 +26,7 @@ def find_package_bin(package, binary=None):
     if find_spec(package):
         return f"{PYTHON} -m {package}"
 
-    executable = which(binary)
-    if executable:
+    if executable := which(binary):
         msg = "Package %s can not be found inside %s, using system executable %s"
         logging.critical(msg, package, sys.prefix, executable)
         return executable
@@ -44,8 +43,8 @@ def find_venv_bin(venv_path, bin_name):
 
 def merge_env(other=None, **kwargs):
     """Create a dict from merging items to the current ``os.environ``"""
-    env = {k: v for k, v in environ.items()}  # Clone the environ as a dict
-    env.update(other or {})
+    env = dict(environ.items())
+    env |= (other or {})
     env.update(kwargs)
     return env
 
@@ -62,9 +61,7 @@ def run(*args, **kwargs):
     if args[0] in ("python", "putup", "pip", "tox", "pytest", "pre-commit"):
         raise SystemError("Please specify an executable with explicit path")
 
-    opts = dict(stderr=STDOUT, universal_newlines=True)
-    opts.update(kwargs)
-
+    opts = dict(stderr=STDOUT, universal_newlines=True) | kwargs
     try:
         return check_output(args, **opts)
     except CalledProcessError as ex:

@@ -38,8 +38,7 @@ def parse_args(args):
     parser.add_argument(
         "-v", "--version", action="version", version=f"demoapp_data {pkg_version}"
     )
-    opts = parser.parse_args(args)
-    return opts
+    return parser.parse_args(args)
 
 
 def main(args):

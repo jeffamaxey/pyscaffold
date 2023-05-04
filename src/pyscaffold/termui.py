@@ -39,10 +39,7 @@ def isatty(stream=None):
     """
     stream = stream or sys.stdout
 
-    if hasattr(stream, "isatty"):
-        return stream.isatty()
-
-    return False
+    return stream.isatty() if hasattr(stream, "isatty") else False
 
 
 def init_colorama():

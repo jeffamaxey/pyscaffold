@@ -76,8 +76,8 @@ def test_create_project_respect_operations(tmpfolder, git_mock):
     # Given an existing project
     create_project(project_path="proj")
     for i in (0, 1, 3, 5, 6):
-        tmpfolder.ensure("proj/tests/file" + str(i)).write("old")
-        assert Path("proj/tests/file" + str(i)).exists()
+        tmpfolder.ensure(f"proj/tests/file{str(i)}").write("old")
+        assert Path(f"proj/tests/file{str(i)}").exists()
 
     # and an extension with extra files
     def add_files(struct, opts):

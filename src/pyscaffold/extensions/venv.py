@@ -91,11 +91,11 @@ def install_packages(struct: Structure, opts: ScaffoldOpts) -> ActionParams:
     venv_path = get_path(opts)
 
     if not pretend:
-        pip = get_command("pip", venv_path, include_path=False)
-        if not pip:
-            raise NotInstalled(f"pip cannot be found inside {venv_path}")
-        pip("install", "-U", *deps.deduplicate(packages))
+        if pip := get_command("pip", venv_path, include_path=False):
+            pip("install", "-U", *deps.deduplicate(packages))
 
+        else:
+            raise NotInstalled(f"pip cannot be found inside {venv_path}")
     logger.report("run", f"pip install -U {' '.join(packages)} [{venv_path}]")
     return struct, opts
 

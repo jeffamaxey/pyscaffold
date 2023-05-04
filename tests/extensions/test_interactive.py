@@ -44,7 +44,7 @@ def test_alternative_flags():
         action = argparse.Action(flags, "dest")
         text = interactive.alternative_flags(action)
         assert "--option" not in text
-        assert all([flag in text for flag in ("-o", "-b")])
+        assert all(flag in text for flag in ("-o", "-b"))
 
 
 def test_example_no_value():

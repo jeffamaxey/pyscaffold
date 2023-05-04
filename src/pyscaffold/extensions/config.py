@@ -56,11 +56,11 @@ def save(struct: "Structure", opts: "ScaffoldOpts") -> "ActionParams":
     """Save the given opts as preferences in a PyScaffold's config file."""
     config = ConfigUpdater()
 
-    if not opts.get("save_config"):
-        file = info.config_file()
-    else:
-        file = Path(opts["save_config"])
-
+    file = (
+        Path(opts["save_config"])
+        if opts.get("save_config")
+        else info.config_file()
+    )
     if file.exists():
         config.read(str(file), encoding="utf-8")
     else:

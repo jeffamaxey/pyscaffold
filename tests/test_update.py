@@ -88,8 +88,7 @@ class VenvManager:
         return self
 
     def pyscaffold_version(self):
-        version = self.venv.installed_packages().get("PyScaffold", None)
-        if version:
+        if version := self.venv.installed_packages().get("PyScaffold", None):
             return Version(version.version)
         else:
             return None

@@ -16,7 +16,7 @@ def test_create(monkeypatch):
     created = {}
 
     def spy(path, *_1, **_2):
-        created.update({path: True})
+        created[path] = True
 
     monkeypatch.setattr("pyscaffold.file_system.create_file", spy)
 
@@ -36,7 +36,7 @@ def test_remove(monkeypatch):
     removed = {}
 
     def spy(path, *_1, **_2):
-        removed.update({path: True})
+        removed[path] = True
 
     monkeypatch.setattr("pathlib.Path.exists", lambda _: True)
     monkeypatch.setattr("pyscaffold.file_system.rm_rf", spy)

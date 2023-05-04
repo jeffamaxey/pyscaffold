@@ -28,7 +28,7 @@ def test_chdir(caplog, tmpdir, isolated_logger):
     assert curr_dir == os.getcwd()
     assert curr_dir != new_dir
     logs = caplog.text
-    assert re.search("chdir.+" + dname, logs)
+    assert re.search(f"chdir.+{dname}", logs)
 
 
 def test_pretend_chdir(caplog, tmpdir):
@@ -41,7 +41,7 @@ def test_pretend_chdir(caplog, tmpdir):
     assert new_dir == curr_dir  # the directory is not changed
     assert curr_dir == os.getcwd()
     logs = caplog.text
-    assert re.search("chdir.+" + dname, logs)
+    assert re.search(f"chdir.+{dname}", logs)
 
 
 def test_create_file(tmpfolder):
@@ -60,7 +60,7 @@ def test_pretend_create_file(tmpfolder, caplog):
     assert tmpfolder.join(fname).check() is False
     # But the operation should be logged
     logs = caplog.text
-    assert re.search("create.+" + fname, logs)
+    assert re.search(f"create.+{fname}", logs)
 
 
 def test_create_directory(tmpfolder):
@@ -79,7 +79,7 @@ def test_pretend_create_directory(tmpfolder, caplog):
     assert tmpfolder.join(dname).check() is False
     # But the operation should be logged
     logs = caplog.text
-    assert re.search("create.+" + dname, logs)
+    assert re.search(f"create.+{dname}", logs)
 
 
 def test_chmod(tmpfolder):
@@ -236,4 +236,4 @@ def test_pretend_rm_rf(tmp_path, caplog):
     assert nested_dir.parent.exists()
     # But the operation should be logged
     logs = caplog.text
-    assert re.search("remove.+" + dname, logs)
+    assert re.search(f"remove.+{dname}", logs)

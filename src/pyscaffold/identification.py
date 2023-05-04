@@ -20,11 +20,11 @@ def is_valid_identifier(string: str) -> bool:
     Returns:
         True if string is valid package name else False
     """
-    if not re.match("[_A-Za-z][_a-zA-Z0-9]*$", string):
-        return False
-    if keyword.iskeyword(string):
-        return False
-    return True
+    return (
+        not keyword.iskeyword(string)
+        if re.match("[_A-Za-z][_a-zA-Z0-9]*$", string)
+        else False
+    )
 
 
 def make_valid_identifier(string: str) -> str:
@@ -39,7 +39,7 @@ def make_valid_identifier(string: str) -> str:
     Raises:
         :obj:`InvalidIdentifier`: raised if identifier can not be converted
     """
-    string = str(string).strip()
+    string = string.strip()
     string = string.replace("-", "_")
     string = string.replace(" ", "_")
     string = re.sub("[^_a-zA-Z0-9]", "", string)
@@ -65,7 +65,7 @@ def levenshtein(s1: str, s2: str) -> int:
         return levenshtein(s2, s1)
 
     # len(s1) >= len(s2)
-    if len(s2) == 0:
+    if not s2:
         return len(s1)
 
     previous_row = list(range(len(s2) + 1))

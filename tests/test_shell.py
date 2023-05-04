@@ -73,7 +73,7 @@ def test_get_command():
     python = shell.get_command("python", prefix=sys.prefix, include_path=False)
     assert next(python("--version")).strip().startswith("Python 3")
     with pytest.raises(shell.ShellCommandException):
-        python("--" + uniqstr())
+        python(f"--{uniqstr()}")
 
 
 def test_get_command_inexistent():
@@ -152,7 +152,7 @@ def test_join():
     assert shell.join([]) == ""
     assert shell.join({}) == ""
     assert shell.join(()) == ""
-    assert shell.join(x for x in []) == ""
+    assert shell.join(iter([])) == ""
 
     # Join should accept Path objects
     p1 = Path("a", "b", "c")

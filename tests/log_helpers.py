@@ -26,11 +26,14 @@ def make_record(activity, subject, context=None, target=None, nesting=0):
 
 
 def match_record(record, **kwargs):
-    for key, value in kwargs.items():
-        if getattr(record, key) != value:
-            return False
-
-    return record
+    return next(
+        (
+            False
+            for key, value in kwargs.items()
+            if getattr(record, key) != value
+        ),
+        record,
+    )
 
 
 REPORT_REGEX = re.compile(
@@ -49,11 +52,9 @@ def match_report(record, message=None, **kwargs):
 
     match = result.groupdict()
 
-    for key, value in kwargs.items():
-        if match[key] != value:
-            return False
-
-    return match
+    return next(
+        (False for key, value in kwargs.items() if match[key] != value), match
+    )
 
 
 def ansi_pattern(text):

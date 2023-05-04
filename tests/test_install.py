@@ -109,8 +109,7 @@ class DemoApp:
     def check_not_installed(self):
         installed = [line.split()[0] for line in list(self.pip("list"))[2:]]
         dirty = [self.name, "UNKNOWN"]
-        app_list = [x for x in dirty if x in installed]
-        if app_list:
+        if app_list := [x for x in dirty if x in installed]:
             msg = f"Dirty virtual environment:\n{', '.join(app_list)} found"
             raise RuntimeError(msg)
 
@@ -142,7 +141,7 @@ class DemoApp:
 
     @property
     def dist_file(self):
-        return next((self.pkg_path / "dist").glob(self.name + "*"))
+        return next((self.pkg_path / "dist").glob(f"{self.name}*"))
 
     def install(self, edit=False):
         with self.guard("installed"), chdir(self.pkg_path):

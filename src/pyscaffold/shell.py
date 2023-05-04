@@ -118,7 +118,7 @@ class ShellCommand:
             logger.report("info", f'last command failed with "{msg}"')
             raise ShellCommandException(msg) from e
 
-        return (line for line in (completed.stdout or "").splitlines())
+        return iter((completed.stdout or "").splitlines())
 
 
 def shell_command_error2exit_decorator(func: Callable):
@@ -174,10 +174,7 @@ def command_exists(cmd: str) -> bool:
     Args:
         cmd: executable name
     """
-    if shutil.which(cmd) is None:
-        return False
-    else:
-        return True
+    return shutil.which(cmd) is not None
 
 
 def get_executable(
@@ -201,13 +198,9 @@ def get_executable(
     if include_path and executable:
         return executable
 
-    candidates = list(Path(prefix).resolve().glob(f"*/{name}*"))
-    # ^  this works in virtual envs and both Windows and POSIX
-    if candidates:
+    if candidates := list(Path(prefix).resolve().glob(f"*/{name}*")):
         path = (f.parent for f in sorted(candidates, key=lambda p: len(str(p))))
         return shutil.which(name, path=os.pathsep.join(str(p) for p in path))
-        # ^  which will guarantee we find an executable and not only a regular file
-
     return None
 
 
@@ -231,8 +224,7 @@ def get_command(
 
 def get_editor(**kwargs):
     """Get an available text editor program"""
-    from_env = os.getenv("VISUAL") or os.getenv("EDITOR")
-    if from_env:
+    if from_env := os.getenv("VISUAL") or os.getenv("EDITOR"):
         return from_env  # user is responsible for proper quoting
 
     candidates = ((get_executable(e), opts) for e, opts in EDITORS.items())
